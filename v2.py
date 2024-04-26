@@ -203,7 +203,10 @@ for iter in range(max_iters):
     logits, loss = model(xb, yb)
     optimizer.zero_grad(set_to_none=True)
     loss.backward()
-    optimizer.step()
+    optimizer.step() 
+
+losses = estimate_loss()
+print(f'Step {iter:>4}: Train loss {losses["train"]:.4f} | Val loss: {losses["val"]:.4f}')
 
 # Generate from the model
 context = torch.zeros((1, 1), dtype=torch.long, device=device)
