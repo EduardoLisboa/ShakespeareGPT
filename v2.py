@@ -19,8 +19,11 @@ dropout = 0.2
 torch.manual_seed(1337)
 
 # wget https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt
-with open('input.txt', 'r', encoding='utf-8') as f:
+with open('hp_separated.txt', 'r', encoding='utf-8') as f:
     text = f.read()
+
+# Add line breaks at every end of sentence.
+text = '\n'.join(text.split('|'))
 
 # All unique characters that occur in this text
 chars = sorted(list(set(text)))
@@ -116,7 +119,7 @@ class FeedForward(nn.Module):
             nn.Linear(4 * n_embd, n_embd),
             nn.Dropout(dropout)
         )
-    
+
     def forward(self, x):
         return self.net(x)
 
@@ -201,7 +204,7 @@ for iter in range(max_iters):
     if iter % eval_interval == 0:
         losses = estimate_loss()
         print(f'Step {iter:>4}: Train loss {losses["train"]:.4f} | Val loss: {losses["val"]:.4f}')
-    
+
     # Sample a batch of data
     xb, yb = get_batch('train')
 
@@ -209,7 +212,7 @@ for iter in range(max_iters):
     logits, loss = model(xb, yb)
     optimizer.zero_grad(set_to_none=True)
     loss.backward()
-    optimizer.step() 
+    optimizer.step()
 
 losses = estimate_loss()
 print(f'Step {iter:>4}: Train loss {losses["train"]:.4f} | Val loss: {losses["val"]:.4f}')
