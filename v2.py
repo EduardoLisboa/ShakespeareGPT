@@ -216,4 +216,8 @@ print(f'Step {iter:>4}: Train loss {losses["train"]:.4f} | Val loss: {losses["va
 
 # Generate from the model
 context = torch.zeros((1, 1), dtype=torch.long, device=device)
-print(decode(m.generate(context, max_new_tokens=500)[0].tolist()))
+out = decode(m.generate(context, max_new_tokens=2000)[0].tolist())
+# print(out)
+
+with open('output.txt', 'w', encoding='utf-8') as f:
+    f.write(out)
